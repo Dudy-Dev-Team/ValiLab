@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  sync:
+  sync-main:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +25,8 @@ jobs:
 
       - name: Sync Develop to Main
         run: |
-          git checkout main || git checkout -b main # Cambia a main o la crea si no existe
-          git merge origin/develop --no-ff         # Fusiona los cambios de develop en main
-          git push origin main                     # Sube los cambios a main
+          git checkout main
+          git pull origin main
+          git rebase origin/develop
+          git merge origin/develop --no-ff
+          git push origin main --force-with-lease
