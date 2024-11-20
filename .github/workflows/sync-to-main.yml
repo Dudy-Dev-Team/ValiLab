@@ -1,37 +1,30 @@
-name: Sync develop to main
+name: Sync Develop to Main
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Ejecución diaria
-  workflow_dispatch: # Permite ejecución manual
+    - cron: '0 */4 * * *' # Cada 4 horas (ajusta según tus necesidades)
+  workflow_dispatch: # Permite ejecución manual desde la pestaña Actions
 
 permissions:
   contents: write
 
 jobs:
-  sync-main:
+  sync:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Asegúrate de clonar todo el historial y todas las ramas
+          fetch-depth: 0 # Clona todo el historial y todas las ramas
 
-      - name: Configure Git
+      - name: Setup Git User
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      - name: Fetch and switch to main
+      - name: Sync Develop to Main
         run: |
-          git fetch origin main:main # Trae la rama main
-          git checkout main          # Haz checkout de la rama main
-
-      - name: Merge develop into main
-        run: |
-          git merge origin/develop --no-ff
-
-      - name: Push changes to main
-        run: |
-          git push origin main
+          git checkout main || git checkout -b main # Cambia a main o la crea si no existe
+          git merge origin/develop --no-ff         # Fusiona los cambios de develop en main
+          git push origin main                     # Sube los cambios a main
