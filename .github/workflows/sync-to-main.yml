@@ -1,8 +1,8 @@
 name: Sync Develop to Main
 
 on:
-  schedule:
-    - cron: '0 */4 * * *' # Cada 4 horas (ajusta según tus necesidades)
+  # schedule:
+    # - cron: '0 */4 * * *' # Cada 4 horas (ajusta según tus necesidades)
   workflow_dispatch: # Permite ejecución manual desde la pestaña Actions
 
 permissions:
